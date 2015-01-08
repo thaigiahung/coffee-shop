@@ -48,6 +48,7 @@ var bcrypt = require('bcrypt'),
                  }
 
                  bcrypt.compare(password, user.hashedPassword, function(err, res){
+                  console.log(res)
                    if(err){
                      return done(err, null);
                    } else {
