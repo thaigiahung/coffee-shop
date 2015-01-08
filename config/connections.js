@@ -45,7 +45,7 @@ module.exports.connections = {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'inPOS'
+    database: 'erp'
   },
   // mysql: {
   //   module    : 'sails-mysql',
