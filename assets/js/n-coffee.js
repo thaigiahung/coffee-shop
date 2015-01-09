@@ -34,7 +34,7 @@ function appendAccessToken() {
 }
 
 // Load temlate
-async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html'], function(url, done) {
+async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html', '/tpl/category-page.html'], function(url, done) {
   $.get(url, function(data) {
     done(null, data);
   });  
@@ -44,6 +44,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
     var adminTemplate = templates[1];
     var productPageTemplate = templates[2];
     var storePageTemplate = templates[3];
+    var categoryPageTemplate = templates[4];
  
     var Session = Backbone.Model.extend({
       url: function() {
@@ -418,6 +419,132 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
       }
     });
 
+    var CategoryRow = Backbone.View.extend({
+      tagName: 'tr',
+
+      events: {
+        'click .remove': 'removeCategory',
+        'click .update': 'updateCategory'
+      },
+
+      constructor: function(categoryPage, category, index) {
+        Backbone.View.call(this);
+        this.categoryPage = categoryPage;
+        this.category = category;
+        this.index = index;
+        this.listenTo(this.category, 'change', this.render);
+      },
+
+      removeCategory: function(e) {
+        e.preventDefault();
+        this.category.destroy();
+        this.remove();
+      },
+
+      updateCategory: function(e) {
+        e.preventDefault();
+        this.categoryPage.updateCategory(this.category);
+      },
+
+      render: function() {
+        this.$el.empty();
+        this.$el.append('<td>' + this.index +'</td>');
+        this.$el.append('<td>' + _.escape(this.category.get('name')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.category.get('description')) +'</td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
+        return this;
+      }
+    });
+
+    var CategoryPage = Backbone.View.extend({
+      template: _.template(categoryPageTemplate),
+
+      events: {
+        'click #form button[type=submit]': 'submitForm',
+        'click .add': 'addCategory'
+      },
+
+      constructor: function(category, index) {
+        Backbone.View.call(this);
+        this.categories = new CategoryCollection();
+        // Append
+        this.listenTo(this.categories, 'add', this.addCategoryRow);
+        // Re-render, index change!
+        this.listenTo(this.categories, 'remove', this.render);
+        var _this = this;
+        // Fetch categories
+        this.categories.fetch({})
+      },
+
+      addCategoryRow: function(category) {
+        this.$('#category-table').append(new CategoryRow(this, category, 1 + this.categories.indexOf(category)).render().el);
+      },
+
+      updateCategory: function(category) {
+        this.currentCategory = category;
+        this.$('#form .modal-title').text('Update category');
+        this.$('#category-name').val(category.get('name'));
+        this.$('#category-description').val(category.get('description'));
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+      addCategory: function() {
+        this.currentCategory = null;
+        this.$('#form .modal-title').text('Add category');
+        this.$('#category-name').val('');
+        this.$('#category-description').val('');
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+      submitForm: function(e) {
+        e.preventDefault();
+        var _this = this;
+        if (this.currentCategory) {
+          _this.currentCategory.save({
+            name: _this.$('#category-name').val(),
+            description: _this.$('#category-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot update category!');
+              _this.$('#message').show();
+            }
+          });
+        } else {
+          _this.categories.create({
+            name: _this.$('#category-name').val(),
+            description: _this.$('#category-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot add category!');
+              _this.$('#message').show();
+            }
+          });
+        }
+      },
+
+      render: function() {
+        this.$el.html(this.template());
+        this.categories.each(function(category, index) {
+          this.$('#category-table').append(new CategoryRow(this, category, index + 1).render().el);
+        })
+        return this;
+      }
+    });
+
     var AdminView = Backbone.View.extend({
       template: _.template(adminTemplate),
 
@@ -517,6 +644,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         'manage/products': 'products',
         'manage/inventories': 'inventories',
         'manage/stores': 'stores',
+        'manage/categories': 'categories',
         'login': 'login',
         'logout': 'logout'
       },
@@ -566,6 +694,17 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.loadDashboard();
         // Change content view to product list
         this.adminView.setPage(new StorePage());
+      },
+
+      categories: function() {
+        // Clean up DOM
+        if (!window.session) {
+          window.router.navigate('login', {trigger: true});
+          return;
+        }
+        this.loadDashboard();
+        // Change content view to category list
+        this.adminView.setPage(new CategoryPage());
       },
 
       inventories: function() {
