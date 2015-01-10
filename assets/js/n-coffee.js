@@ -97,9 +97,9 @@ async.mapSeries(['/tpl/login.html',
     var Recipe = Backbone.Model.extend({
       url: function() {
         if (this.id) {
-          return '/recipe/' + this.id + '?' + appendAccessToken();
+          return '/recipeitem/' + this.id + '?' + appendAccessToken();
         }
-        return '/recipe?' + appendAccessToken();
+        return '/recipeitem?' + appendAccessToken();
       }      
     });
 
@@ -107,7 +107,8 @@ async.mapSeries(['/tpl/login.html',
       model: Recipe,
 
       url: function() {
-        return '/recipe?' + appendAccessToken();
+        return '/recipeitem?' + appendAccessToken();
+      }
     });
 
     var Ingredient = Backbone.Model.extend({
@@ -613,11 +614,16 @@ async.mapSeries(['/tpl/login.html',
         this.recipePage.updateRecipe(this.recipe);
       },
 
+      // this.$el.append('<td>' + _.escape(this.productPage.categories.get(this.product.get('category')).get('name')) +'</td>');
       render: function() {
         this.$el.empty();
         this.$el.append('<td>' + this.index +'</td>');
-        this.$el.append('<td>' + _.escape(this.recipe.get('product')) +'</td>');
-        this.$el.append('<td>' + _.escape(this.recipe.get('category')) +'</td>');
+        /**
+         * chỗ này lúc đầu là this.recipe.get('product') thôi.
+         * Chứ ko có (this.recipePage.products.get(this.recipe.get('product')).get('name'))
+         */
+        this.$el.append('<td>' + _.escape(this.recipePage.products.get(this.recipe.get('product')).get('name')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.recipePage.ingredients.get(this.recipe.get('ingredient')).get('name')) +'</td>');
         this.$el.append('<td>' + _.escape(this.recipe.get('amount')) +'</td>');
         this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
         return this;
@@ -636,7 +642,7 @@ async.mapSeries(['/tpl/login.html',
         Backbone.View.call(this);
         this.recipes = new RecipeCollection();
         this.products = new ProductCollection();
-        this.categories = new CategoryCollection();
+        this.ingredients = new IngredientCollection();
         // Append
         this.listenTo(this.recipes, 'add', this.addRecipeRow);
         // Re-render, index change!
@@ -644,7 +650,7 @@ async.mapSeries(['/tpl/login.html',
         var _this = this;
         // Fetch recipes
         // this.recipes.fetch({})
-        this.categories.fetch({
+        this.ingredients.fetch({
           success: function() {
             // Fetch recipes
             _this.recipes.fetch();
@@ -659,27 +665,25 @@ async.mapSeries(['/tpl/login.html',
       },
 
       addRecipeRow: function(recipe) {
-        this.$('#recipe-table').append(new RecipeRow(this, recipe, 1 + this.categories.indexOf(recipe)).render().el);
+        this.$('#recipe-table').append(new RecipeRow(this, recipe, 1 + this.recipes.indexOf(recipe)).render().el);
       },
 
       updateRecipe: function(recipe) {
         this.currentRecipe = recipe;
         this.$('#form .modal-title').text('Update recipe');
-        this.$('#recipe-product').val(recipe.get('product'));
-        this.$('#recipe-ingredient').val(recipe.get('ingredient'));
+        this.$('#recipe-product').empty();
+        this.products.each(function(product){
+          this.$('#recipe-product').append('<option value="'+product.id+'">' + product.get('name') + '</option>');
+        }, this);
+        this.$('#recipe-ingredient').empty();
+        this.ingredients.each(function(ingredient){
+          this.$('#recipe-ingredient').append('<option value="'+ingredient.id+'">' + ingredient.get('name') + '</option>');
+        }, this);
         this.$('#recipe-amount').val(recipe.get('amount'));
+        this.currentRecipe = recipe;
         this.$('#message').hide();
         this.$('#form').modal();
       },
-
-      // addRecipe: function() {
-        // this.currentRecipe = null;
-        // this.$('#form .modal-title').text('Add recipe');
-        // this.$('#recipe-name').val('');
-        // this.$('#recipe-description').val('');
-        // this.$('#message').hide();
-        // this.$('#form').modal();
-      // },
 
       addRecipe: function() {
         this.currentRecipe = null;
@@ -736,13 +740,15 @@ async.mapSeries(['/tpl/login.html',
           });
         }
       },
+
+      render: function() {
+        this.$el.html(this.template());
         this.recipes.each(function(recipe, index) {
           this.$('#recipe-table').append(new RecipeRow(this, recipe, index + 1).render().el);
         })
         return this;
       }
     });
-    //Huy - Ingredient
 
     var IngredientRow = Backbone.View.extend({
       tagName: 'tr',
