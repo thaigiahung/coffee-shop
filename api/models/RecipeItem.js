@@ -13,7 +13,7 @@ module.exports = {
 
         product: { model: 'product' },
 
-        material: { model: 'material' }
+        ingredient: { model: 'ingredient' }
 
         // quantity: { type: 'integer' }
     }

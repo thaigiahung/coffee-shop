@@ -22,6 +22,7 @@ module.exports.policies = {
     CustomerController: 'oauthBearer',
     CouponController: 'oauthBearer',
     SaleController:  'oauthBearer',
+    IngredientController: 'oauthBearer',
     InfoController: 'oauthBearer',
     UserController: 'sessionAuth'
 };

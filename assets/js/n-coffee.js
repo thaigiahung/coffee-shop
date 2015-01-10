@@ -34,7 +34,13 @@ function appendAccessToken() {
 }
 
 // Load temlate
-async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html', '/tpl/category-page.html', '/tpl/recipe-page.html'], function(url, done) {
+async.mapSeries(['/tpl/login.html', 
+  '/tpl/admin.html', 
+  '/tpl/product-page.html', 
+  '/tpl/store-page.html', 
+  '/tpl/category-page.html', 
+  '/tpl/recipe-page.html', 
+  '/tpl/ingredient-page.html'], function(url, done) {
   $.get(url, function(data) {
     done(null, data);
   });  
@@ -46,7 +52,8 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
     var storePageTemplate = templates[3];
     var categoryPageTemplate = templates[4];
     var recipePageTemplate = templates[5];
- 
+    var ingredientPageTemplate = templates[6];
+
     var Session = Backbone.Model.extend({
       url: function() {
         return '/info?' + appendAccessToken();
@@ -78,7 +85,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         return '/category?' + appendAccessToken();
       }      
     });
-
+ 
     var CategoryCollection = Backbone.Collection.extend({
       model: Category,
 
@@ -101,6 +108,22 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
 
       url: function() {
         return '/recipe?' + appendAccessToken();
+    });
+
+    var Ingredient = Backbone.Model.extend({
+      url: function() {
+        if (this.id) {
+          return '/ingredient/' + this.id + '?' + appendAccessToken();
+        }
+        return '/ingredient?' + appendAccessToken();
+      }      
+    });
+ 
+    var IngredientCollection = Backbone.Collection.extend({
+      model: Ingredient,
+
+      url: function() {
+        return '/ingredient?' + appendAccessToken();
       }
     });
 
@@ -162,7 +185,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$el.append('<td>' + _.escape(this.product.get('price')) +'</td>');
         this.$el.append('<td><img class="product-image" src="' + this.product.get('image') +'"></td>');
         // this.$el.append('<td>' + _.escape(this.product.get('image')) +'</td>');
-        this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Edit</button> <button type="button" class="btn btn-danger remove">Delete</button></td>');
         return this;
       }
     });
@@ -339,7 +362,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$el.append('<td>' + _.escape(this.store.get('name')) +'</td>');
         this.$el.append('<td>' + _.escape(this.store.get('address')) +'</td>');
         this.$el.append('<td>' + _.escape(this.store.get('phone')) +'</td>');
-        this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Edit</button> <button type="button" class="btn btn-danger remove">Delete</button></td>');
         return this;
       }
     });
@@ -469,7 +492,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$el.append('<td>' + this.index +'</td>');
         this.$el.append('<td>' + _.escape(this.category.get('name')) +'</td>');
         this.$el.append('<td>' + _.escape(this.category.get('description')) +'</td>');
-        this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Edit</button> <button type="button" class="btn btn-danger remove">Delete</button></td>');
         return this;
       }
     });
@@ -599,17 +622,6 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
         return this;
       }
-      // render: function() {
-      //   this.$el.empty();
-      //   this.$el.append('<td>' + this.index +'</td>');
-      //   this.$el.append('<td>' + _.escape(this.product.get('name')) +'</td>');
-      //   this.$el.append('<td>' + _.escape(this.productPage.categories.get(this.product.get('category')).get('name')) +'</td>');
-      //   this.$el.append('<td>' + _.escape(this.product.get('price')) +'</td>');
-      //   this.$el.append('<td><img class="product-image" src="' + this.product.get('image') +'"></td>');
-      //   // this.$el.append('<td>' + _.escape(this.product.get('image')) +'</td>');
-      //   this.$el.append('<td><button type="button" class="btn btn-primary update">Cập nhật</button> <button type="button" class="btn btn-danger remove">Xóa</button></td>');
-      //   return this;
-      // }
     });
 
     var RecipePage = Backbone.View.extend({
@@ -685,20 +697,6 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$('#form').modal();
       },
 
-      // addProduct: function() {
-      //   this.currentProduct = null;
-      //   this.$('#form .modal-title').text('Thêm sản phẩm');
-      //   this.$('#product-name').val('');
-      //   this.$('#product-price').val('');
-      //   this.$('#product-category').empty();
-      //   this.categories.each(function(c) {
-      //     this.$('#product-category').append('<option value="' + c.id + '">' + c.get('name') + '</option>');
-      //   }, this);
-      //   this.$('#product-image').val('');
-      //   this.$('#message').hide();
-      //   this.$('#form').modal();
-      // },
-
       submitForm: function(e) {
         e.preventDefault();
         var _this = this;
@@ -738,11 +736,152 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
           });
         }
       },
+        this.recipes.each(function(recipe, index) {
+          this.$('#recipe-table').append(new RecipeRow(this, recipe, index + 1).render().el);
+        })
+        return this;
+      }
+    });
+    //Huy - Ingredient
+
+    var IngredientRow = Backbone.View.extend({
+      tagName: 'tr',
+
+      events: {
+        'click .remove': 'removeIngredient',
+        'click .update': 'updateIngredient'
+      },
+
+      constructor: function(ingredientPage, ingredient, index) {
+        Backbone.View.call(this);
+        this.ingredientPage = ingredientPage;
+        this.ingredient = ingredient;
+        this.index = index;
+        this.listenTo(this.ingredient, 'change', this.render);
+      },
+
+      removeIngredient: function(e) {
+        e.preventDefault();
+        this.ingredient.destroy();
+        this.remove();
+      },
+
+      updateIngredient: function(e) {
+        e.preventDefault();
+        this.ingredientPage.updateIngredient(this.ingredient);
+      },
+
+      render: function() {
+        this.$el.empty();
+        this.$el.append('<td>' + this.index +'</td>');
+        this.$el.append('<td>' + _.escape(this.ingredient.get('name')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.ingredient.get('instock')) + '</td>');
+        this.$el.append('<td>' + _.escape(this.ingredient.get('unit')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.ingredient.get('price')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.ingredient.get('description')) +'</td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Edit</button> <button type="button" class="btn btn-danger remove">Delete</button></td>');
+        return this;
+      },
+    });
+
+    var IngredientPage = Backbone.View.extend({
+      template: _.template(ingredientPageTemplate),
+
+      events: {
+        'click #form button[type=submit]': 'submitForm',
+        'click .add': 'addIngredient'
+      },
+
+      constructor: function(ingredient, index) {
+        Backbone.View.call(this);
+        this.ingredient = new IngredientCollection();
+        // Append
+        this.listenTo(this.ingredient, 'add', this.addIngredientRow);
+        // Re-render, index change!
+        this.listenTo(this.ingredient, 'remove', this.render);
+        var _this = this;
+        // Fetch ingredient
+        this.ingredient.fetch({})
+      },
+
+      addIngredientRow: function(ingredient) {
+        this.$('#ingredient-table').append(new IngredientRow(this, ingredient, 1 + this.ingredient.indexOf(ingredient)).render().el);
+      },
+
+      updateIngredient: function(ingredient) {
+        this.currentIngredient = ingredient;
+        this.$('#form .modal-title').text('Update ingredient');
+        this.$('#ingredient-name').val(ingredient.get('name'));
+        this.$('#ingredient-instock').val(ingredient.get('instock'));
+        this.$('#ingredient-unit').val(ingredient.get('unit'));
+        this.$('#ingredient-price').val(ingredient.get('price'));
+        this.$('#ingredient-description').val(ingredient.get('description'));
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+      addIngredient: function() {
+        this.currentIngredient = null;
+        this.$('#form .modal-title').text('Add ingredient');
+        this.$('#ingredient-name').val('');
+        this.$('#ingredient-instock').val('');
+        this.$('#ingredient-unit').val('');
+        this.$('#ingredient-price').val('');
+        this.$('#ingredient-description').val('');
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+
+      submitForm: function(e) {
+        e.preventDefault();
+        var _this = this;
+        if (this.currentIngredient) {
+          _this.currentIngredient.save({
+            name: _this.$('#ingredient-name').val(),
+            instock: _this.$('#ingredient-instock').val(),
+            unit: _this.$('#ingredient-unit').val(),
+            price: _this.$('#ingredient-price').val(),
+            description: _this.$('#ingredient-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot update ingredient!');
+              _this.$('#message').show();
+            }
+          });
+        } else {
+          console.log('price: ' + _this.$('#ingredient-price').val());
+          _this.ingredient.create({
+            name: _this.$('#ingredient-name').val(),
+            instock: _this.$('#ingredient-instock').val(),
+            unit: _this.$('#ingredient-unit').val(),
+            price: _this.$('#ingredient-price').val(),            
+            description: _this.$('#ingredient-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot add ingredient!');
+              _this.$('#message').show();
+            }
+          });
+        }
+      },
 
       render: function() {
         this.$el.html(this.template());
-        this.recipes.each(function(recipe, index) {
-          this.$('#recipe-table').append(new RecipeRow(this, recipe, index + 1).render().el);
+        this.ingredient.each(function(ingredient, index) {
+          this.$('#ingredient-table').append(new IngredientRow(this, ingredient, index + 1).render().el);
         })
         return this;
       }
@@ -849,6 +988,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         'manage/stores': 'stores',
         'manage/categories': 'categories',
         'manage/recipes': 'recipes',
+        'manage/ingredient': 'ingredient',
         'login': 'login',
         'logout': 'logout'
       },
@@ -909,6 +1049,17 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.loadDashboard();
         // Change content view to category list
         this.adminView.setPage(new CategoryPage());
+      },
+
+      ingredient: function() {
+        // Clean up DOM
+        if (!window.session) {
+          window.router.navigate('login', {trigger: true});
+          return;
+        }
+        this.loadDashboard();
+        // Change content view to ingredient list
+        this.adminView.setPage(new IngredientPage());
       },
 
       inventories: function() {
