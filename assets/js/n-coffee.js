@@ -34,7 +34,7 @@ function appendAccessToken() {
 }
 
 // Load temlate
-async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html', '/tpl/category-page.html'], function(url, done) {
+async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html', '/tpl/category-page.html', '/tpl/Ingredientcategory-page.html'],function(url, done) {
   $.get(url, function(data) {
     done(null, data);
   });  
@@ -45,6 +45,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
     var productPageTemplate = templates[2];
     var storePageTemplate = templates[3];
     var categoryPageTemplate = templates[4];
+    var IngredientcategoryPageTemplate = templates[5];
  
     var Session = Backbone.Model.extend({
       url: function() {
@@ -68,6 +69,24 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         return '/product?' + appendAccessToken();
       }
     });
+
+    var IngredientCategory = Backbone.Model.extend({
+      url: function() {
+        if (this.id) {
+          return '/Ingredientcategory/' + this.id + '?' + appendAccessToken();
+        }
+        return '/Ingredientcategory?' + appendAccessToken();
+      }      
+    });
+
+    var IngredientCategoryCollection = Backbone.Collection.extend({
+      model: IngredientCategory,
+
+      url: function() {
+        return '/Ingredientcategory?' + appendAccessToken();
+      }
+    });
+
 
     var Category = Backbone.Model.extend({
       url: function() {
@@ -418,6 +437,132 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         return this;
       }
     });
+    
+    var IngredientCategoryRow = Backbone.View.extend({
+      tagName: 'tr',
+
+      events: {
+        'click .remove': 'removeIngredientCategory',
+        'click .update': 'updateIngredientCategory'
+      },
+
+      constructor: function(IngredientcategoryPage, Ingredientcategory, index) {
+        Backbone.View.call(this);
+        this.IngredientcategoryPage = IngredientcategoryPage;
+        this.Ingredientcategory = Ingredientcategory;
+        this.index = index;
+        this.listenTo(this.Ingredientcategory, 'change', this.render);
+      },
+
+      removeIngredientCategory: function(e) {
+        e.preventDefault();
+        this.Ingredientcategory.destroy();
+        this.remove();
+      },
+
+      updateIngredientCategory: function(e) {
+        e.preventDefault();
+        this.IngredientcategoryPage.updateIngredientCategory(this.Ingredientcategory);
+      },
+
+      render: function() {
+        this.$el.empty();
+        this.$el.append('<td>' + this.index +'</td>');
+        this.$el.append('<td>' + _.escape(this.Ingredientcategory.get('name')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.Ingredientcategory.get('description')) +'</td>');
+        this.$el.append('<td><button type="button" class="btn btn-primary update">Update</button> <button type="button" class="btn btn-danger remove">Delete</button></td>');
+        return this;
+      }
+    });
+    
+    var IngredientCategoryPage = Backbone.View.extend({
+      template: _.template(IngredientcategoryPageTemplate),
+
+      events: {
+        'click #form button[type=submit]': 'submitForm',
+        'click .add': 'addIngredientCategory'
+      },
+
+      constructor: function(Ingredientcategory, index) {
+        Backbone.View.call(this);
+        this.Ingredientcategories = new IngredientCategoryCollection();
+        // Append
+        this.listenTo(this.Ingredientcategories, 'add', this.addIngredientCategoryRow);
+        // Re-render, index change!
+        this.listenTo(this.Ingredientcategories, 'remove', this.render);
+        var _this = this;
+        // Fetch categories
+        this.Ingredientcategories.fetch({})
+      },
+
+      addIngredientCategoryRow: function(Ingredientcategory) {
+        this.$('#Ingredientcategory-table').append(new IngredientCategoryRow(this, Ingredientcategory, 1 + this.Ingredientcategories.indexOf(Ingredientcategory)).render().el);
+      },
+
+      updateIngredientCategory: function(Ingredientcategory) {
+        this.currentIngredientCategory = Ingredientcategory;
+        this.$('#form .modal-title').text('Update ingredient category');
+        this.$('#Ingredientcategory-name').val(Ingredientcategory.get('name'));
+        this.$('#Ingredientcategory-description').val(Ingredientcategory.get('description'));
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+      addIngredientCategory: function() {
+        this.currentIngredientCategory = null;
+        this.$('#form .modal-title').text('Add  ingredient category');
+        this.$('#Ingredientcategory-name').val('');
+        this.$('#Ingredientcategory-description').val('');
+        this.$('#message').hide();
+        this.$('#form').modal();
+      },
+
+      submitForm: function(e) {
+        e.preventDefault();
+        var _this = this;
+        if (this.currentIngredientCategory) {
+          _this.currentIngredientCategory.save({
+            name: _this.$('#Ingredientcategory-name').val(),
+            description: _this.$('#Ingredientcategory-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot update ingredient category!');
+              _this.$('#message').show();
+            }
+          });
+        } else {
+          _this.Ingredientcategories.create({
+            name: _this.$('#Ingredientcategory-name').val(),
+            description: _this.$('#Ingredientcategory-description').val(),
+          }, {
+            wait: true,
+            success: function() {
+              // Hide form
+              _this.$('#form').modal('hide');
+            },
+            error: function() {
+              // Print message
+              _this.$('#message').text('Cannot add ingredient category!');
+              _this.$('#message').show();
+            }
+          });
+        }
+      },
+
+      render: function() {
+        this.$el.html(this.template());
+        this.Ingredientcategories.each(function(Ingredientcategory, index) {
+          this.$('#Ingredientcategory-table').append(new IngredientCategoryRow(this, Ingredientcategory, index + 1).render().el);
+        })
+        return this;
+      }
+    });
 
     var CategoryRow = Backbone.View.extend({
       tagName: 'tr',
@@ -645,6 +790,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         'manage/inventories': 'inventories',
         'manage/stores': 'stores',
         'manage/categories': 'categories',
+        'manage/Ingredientcategories': 'Ingredientcategories',
         'login': 'login',
         'logout': 'logout'
       },
@@ -706,6 +852,18 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         // Change content view to category list
         this.adminView.setPage(new CategoryPage());
       },
+
+      Ingredientcategories: function() {
+        // Clean up DOM
+        if (!window.session) {
+          window.router.navigate('login', {trigger: true});
+          return;
+        }
+        this.loadDashboard();
+        // Change content view to Ingredientcategory list
+        this.adminView.setPage(new IngredientCategoryPage());
+      },
+
 
       inventories: function() {
         // Clean up DOM
