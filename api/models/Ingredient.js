@@ -12,13 +12,22 @@ module.exports = {
 
         name: { type: 'string', size: 50, required: true, unique: true },
 
+        category: {model: 'IngredientCategory' },
+
         price: { type: 'float' },
 
         description: {type: 'string'},
 
-        unit: { type: 'string', size: 5, required: true, enum: ['cái', 'g', 'ml'], defaultsTo: 'cái'},
+        unit: { type: 'string', size: 5, required: true, enum: ['p', 'mg', 'ml'], defaultsTo: 'cái'},
 
-        instock: {type: 'integer', required: true, defaultsTo: 0}
+        instock: {type: 'integer', required: true, defaultsTo: 0},
+
+        toJSON: function() {
+            var obj = this.toObject();
+            obj.category = obj.category.id;
+            return obj;
+        }
     }
+
 };
 

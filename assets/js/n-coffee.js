@@ -34,12 +34,15 @@ function appendAccessToken() {
 }
 
 // Load temlate
-<<<<<<< HEAD
-async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', '/tpl/store-page.html', '/tpl/category-page.html', '/tpl/Ingredientcategory-page.html'],function(url, done) {
-=======
-async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html', 
-  '/tpl/store-page.html', '/tpl/category-page.html', '/tpl/ingredient-page.html'], function(url, done) {
->>>>>>> a86252636eb93d7fdf971af0b0f1442f1a0949e8
+
+async.mapSeries(['/tpl/login.html', 
+                  '/tpl/admin.html', 
+                  '/tpl/product-page.html', 
+                  '/tpl/store-page.html', 
+                  '/tpl/category-page.html',
+                  '/tpl/Ingredient-page.html',
+                  '/tpl/Ingredientcategory-page.html'],function(url, done) {
+
   $.get(url, function(data) {
     done(null, data);
   });  
@@ -50,13 +53,12 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
     var productPageTemplate = templates[2];
     var storePageTemplate = templates[3];
     var categoryPageTemplate = templates[4];
-<<<<<<< HEAD
-    var IngredientcategoryPageTemplate = templates[5];
+
+    var IngredientcategoryPageTemplate = templates[6];
  
-=======
     var ingredientPageTemplate = templates[5];
 
->>>>>>> a86252636eb93d7fdf971af0b0f1442f1a0949e8
+
     var Session = Backbone.Model.extend({
       url: function() {
         return '/info?' + appendAccessToken();
@@ -750,7 +752,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.$el.empty();
         this.$el.append('<td>' + this.index +'</td>');
         this.$el.append('<td>' + _.escape(this.ingredient.get('name')) +'</td>');
-        //this.$el.append('<td>' + _.escape(this.productPage.categories.get(this.product.get('category')).get('name')) +'</td>');
+        this.$el.append('<td>' + _.escape(this.ingredientPage.ingredientcategories.get(this.ingredient.get('category')).get('name')) +'</td>');
         this.$el.append('<td>' + _.escape(this.ingredient.get('instock')) + '</td>');
         this.$el.append('<td>' + _.escape(this.ingredient.get('unit')) +'</td>');
         this.$el.append('<td>' + _.escape(this.ingredient.get('price')) +'</td>');
@@ -772,13 +774,20 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
       constructor: function(ingredient, index) {
         Backbone.View.call(this);
         this.ingredient = new IngredientCollection();
+        this.ingredientcategories = new IngredientCategoryCollection();
         // Append
         this.listenTo(this.ingredient, 'add', this.addIngredientRow);
         // Re-render, index change!
         this.listenTo(this.ingredient, 'remove', this.render);
         var _this = this;
-        // Fetch ingredient
-        this.ingredient.fetch({})
+        
+        // Fetch categories
+        this.ingredientcategories.fetch({
+          success: function() {
+           // Fetch ingredient
+            _this.ingredient.fetch();
+          }
+        })
       },
 
       addIngredientRow: function(ingredient) {
@@ -789,6 +798,11 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.currentIngredient = ingredient;
         this.$('#form .modal-title').text('Update ingredient');
         this.$('#ingredient-name').val(ingredient.get('name'));
+        this.$('#ingredient-category').empty();
+        this.ingredientcategories.each(function(c) {
+          console.log(ingredient.get('category').id, c.id);
+          this.$('#ingredient-category').append('<option value="' + c.id + '"' + (ingredient.get('category') == c.id ? ' selected' : '') + '>' + c.get('name') + '</option>');
+        }, this);
         this.$('#ingredient-instock').val(ingredient.get('instock'));
         this.$('#ingredient-unit').val(ingredient.get('unit'));
         this.$('#ingredient-price').val(ingredient.get('price'));
@@ -801,6 +815,20 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         this.currentIngredient = null;
         this.$('#form .modal-title').text('Add ingredient');
         this.$('#ingredient-name').val('');
+        this.$('#ingredient-category').empty();
+        this.ingredientcategories.each(function(c) {
+          this.$('#ingredient-category').append('<option value="' + c.id + '">' + c.get('name') + '</option>');
+        }, this);
+
+
+       // this.ingredientcategories.each(function(b) {
+         // console.log(ingredient.get('category').id, b.id);
+          //this.$('#ingredient-category').append('<option value="' + b.id + '">' + b.get('name') + '</option>');
+        //}, this);
+       //this.ingredientcategories.each(function(c) {
+         // console.log(ingredient.get('category').id, c.id);
+          //this.$('#ingredient-category').append('<option value="' + c.id + '"' + (ingredient.get('category') == c.id ? ' selected' : '') + '>' + c.get('name') + '</option>');
+        //}, this);
         this.$('#ingredient-instock').val('');
         this.$('#ingredient-unit').val('');
         this.$('#ingredient-price').val('');
@@ -815,6 +843,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         if (this.currentIngredient) {
           _this.currentIngredient.save({
             name: _this.$('#ingredient-name').val(),
+            category: _this.$('#ingredient-category').val(),
             instock: _this.$('#ingredient-instock').val(),
             unit: _this.$('#ingredient-unit').val(),
             price: _this.$('#ingredient-price').val(),
@@ -835,6 +864,7 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
           console.log('price: ' + _this.$('#ingredient-price').val());
           _this.ingredient.create({
             name: _this.$('#ingredient-name').val(),
+            category: _this.$('#product-category').val(),
             instock: _this.$('#ingredient-instock').val(),
             unit: _this.$('#ingredient-unit').val(),
             price: _this.$('#ingredient-price').val(),            
@@ -963,11 +993,8 @@ async.mapSeries(['/tpl/login.html', '/tpl/admin.html', '/tpl/product-page.html',
         'manage/inventories': 'inventories',
         'manage/stores': 'stores',
         'manage/categories': 'categories',
-<<<<<<< HEAD
         'manage/Ingredientcategories': 'Ingredientcategories',
-=======
         'manage/ingredient': 'ingredient',
->>>>>>> a86252636eb93d7fdf971af0b0f1442f1a0949e8
         'login': 'login',
         'logout': 'logout'
       },
