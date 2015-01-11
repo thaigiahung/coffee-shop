@@ -24,7 +24,6 @@ module.exports = {
 
         toJSON: function() {
             var obj = this.toObject();
-            obj.category = obj.category.id;
             return obj;
         }
     }

@@ -234,7 +234,6 @@ async.mapSeries(['/tpl/login.html',
         this.$('#product-price').val(product.get('price'));
         this.$('#product-category').empty();
         this.categories.each(function(c) {
-          console.log(product.get('category').id, c.id);
           this.$('#product-category').append('<option value="' + c.id + '"' + (product.get('category') == c.id ? ' selected' : '') + '>' + c.get('name') + '</option>');
         }, this);
         this.$('#message').hide();
@@ -739,6 +738,7 @@ async.mapSeries(['/tpl/login.html',
 
       removeIngredient: function(e) {
         e.preventDefault();
+        console.log(this.ingredient);
         this.ingredient.destroy();
         this.remove();
       },
@@ -800,7 +800,6 @@ async.mapSeries(['/tpl/login.html',
         this.$('#ingredient-name').val(ingredient.get('name'));
         this.$('#ingredient-category').empty();
         this.ingredientcategories.each(function(c) {
-          console.log(ingredient.get('category').id, c.id);
           this.$('#ingredient-category').append('<option value="' + c.id + '"' + (ingredient.get('category') == c.id ? ' selected' : '') + '>' + c.get('name') + '</option>');
         }, this);
         this.$('#ingredient-instock').val(ingredient.get('instock'));
@@ -861,10 +860,9 @@ async.mapSeries(['/tpl/login.html',
             }
           });
         } else {
-          console.log('price: ' + _this.$('#ingredient-price').val());
           _this.ingredient.create({
             name: _this.$('#ingredient-name').val(),
-            category: _this.$('#product-category').val(),
+            category: _this.$('#ingredient-category').val(),
             instock: _this.$('#ingredient-instock').val(),
             unit: _this.$('#ingredient-unit').val(),
             price: _this.$('#ingredient-price').val(),            
@@ -1054,7 +1052,7 @@ async.mapSeries(['/tpl/login.html',
         }
         this.loadDashboard();
         // Change content view to category list
-        this.adminView.setPage(new IngredientPage());
+        this.adminView.setPage(new CategoryPage());
       },
 
       ingredient: function() {
