@@ -85,9 +85,9 @@ async.mapSeries(['/tpl/login.html',
     var IngredientCategory = Backbone.Model.extend({
       url: function() {
         if (this.id) {
-          return '/Ingredientcategory/' + this.id + '?' + appendAccessToken();
+          return '/ingredientcategory/' + this.id + '?' + appendAccessToken();
         }
-        return '/Ingredientcategory?' + appendAccessToken();
+        return '/ingredientcategory?' + appendAccessToken();
       }      
     });
 
@@ -95,7 +95,7 @@ async.mapSeries(['/tpl/login.html',
       model: IngredientCategory,
 
       url: function() {
-        return '/Ingredientcategory?' + appendAccessToken();
+        return '/ingredientcategory?' + appendAccessToken();
       }
     });
 
@@ -740,6 +740,7 @@ async.mapSeries(['/tpl/login.html',
         e.preventDefault();
         console.log(this.ingredient);
         this.ingredient.destroy();
+
         this.remove();
       },
 
@@ -818,16 +819,6 @@ async.mapSeries(['/tpl/login.html',
         this.ingredientcategories.each(function(c) {
           this.$('#ingredient-category').append('<option value="' + c.id + '">' + c.get('name') + '</option>');
         }, this);
-
-
-       // this.ingredientcategories.each(function(b) {
-         // console.log(ingredient.get('category').id, b.id);
-          //this.$('#ingredient-category').append('<option value="' + b.id + '">' + b.get('name') + '</option>');
-        //}, this);
-       //this.ingredientcategories.each(function(c) {
-         // console.log(ingredient.get('category').id, c.id);
-          //this.$('#ingredient-category').append('<option value="' + c.id + '"' + (ingredient.get('category') == c.id ? ' selected' : '') + '>' + c.get('name') + '</option>');
-        //}, this);
         this.$('#ingredient-instock').val('');
         this.$('#ingredient-unit').val('');
         this.$('#ingredient-price').val('');
