@@ -25,6 +25,7 @@ module.exports.policies = {
     IngredientController: 'oauthBearer',
     IngredientCategoryController: 'oauthBearer',
     InfoController: 'oauthBearer',
+    RecipeItemController: 'oauthBearer',
     UserController: 'sessionAuth'
 };
 

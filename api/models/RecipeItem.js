@@ -13,9 +13,9 @@ module.exports = {
 
         product: { model: 'product' },
 
-        ingredient: { model: 'ingredient' }
+        ingredient: { model: 'ingredient' },
 
-        // quantity: { type: 'integer' }
+        amount: { type: 'integer' }
     }
 };
 

@@ -21,15 +21,20 @@ module.exports = {
         description: { type: 'text', required: false },
 
         category: { model: 'category' },
-
-        toJSON: function() {
-            var obj = this.toObject();
-            // var host = sails.getBaseurl() + '/';
-            var host = '/product-photos/';
-            obj.category = obj.category.id;
-            obj.image = host + obj.image;
-            return obj;
-        }
+/**
+ * E bỏ cái hàm này thì của e chạy ngon lành :|
+ * Coi bên category, ingredient thì đâu có cần cái này đâu ta.
+ * Nếu cần thì a check lại đi nhóe,
+ * hình như là sai ngay cái khúc obj.category.id thật đó :D
+ */
+        // toJSON: function() {
+        //     var obj = this.toObject();
+        //     // var host = sails.getBaseurl() + '/';
+        //     var host = '/product-photos/';
+        //     obj.category = obj.category.id;
+        //     obj.image = host + obj.image;
+        //     return obj;
+        // }
     }
 
 

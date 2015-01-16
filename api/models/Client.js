@@ -18,12 +18,12 @@ module.exports = {
             type: 'string',
             required: true
         },
-        clientId: 'string',
-        clientSecret: 'string',
-        trusted: {
-            type: 'boolean',
-            defaultsTo: false
-        }
+    clientId: 'string',
+    clientSecret: 'string',
+    trusted: {
+        type: 'boolean',
+        defaultsTo: false
+    }
     
   },
 
