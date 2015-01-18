@@ -22,11 +22,21 @@ module.exports = {
 
         instock: {type: 'integer', required: true, defaultsTo: 0},
 
-        toJSON: function() {
-            var obj = this.toObject();
-            //obj.category = obj.category.id;
-            return obj;
-        }
+        limit: {type: 'integer'},
+
+        store: {type: 'store'}
+
+/**
+ * Cái này lại bị lỗi :(
+ * Ai sửa lại giùm.
+ * Lỗi báo ngay chỗ 
+ * toJSON: function()
+ */
+    //     toJSON: function() {
+    //         var obj = this.toObject();
+    //         //obj.category = obj.category.id;
+    //         return obj;
+    //     }
     }
 
 };

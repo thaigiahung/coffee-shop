@@ -37,6 +37,10 @@ module.exports.routes = {
   // },
 
   // Resources endPoints
+  'get /ingredient/warning/set': {
+  controller: 'IngredientController',
+  action: 'updateLimit'
+  },
 
   '/info': {
     controller: 'InfoController',
