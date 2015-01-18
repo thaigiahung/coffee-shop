@@ -43,6 +43,48 @@ module.exports = {
 				});
 			}
 		});
+	},
+
+/**
+ * [description] update the limitation of the ingredient
+ * when the amount of ingredient instock reached this LIMIT
+ * the system will send the notification to general manager
+ *
+ * [input]
+ * id : id ingredient that will be update
+ * amount : the LIMIT
+ *
+ * [output]
+ * status: 0-fail, 1-success
+ */
+	updateLimit: function(req, res) {
+		/**
+		 * find one ingredient by id
+		 * then update the limit equal to amount
+		 */
+		Ingredient.findOne({id: req.param('id')})
+			.exec(function (err, ingredient) {
+				/**
+				 * Using of if(!ingredient) 
+				 * instead of if(err) 
+				 * is because I can't not get the if(err) to work
+				 *
+				 * THIS IS JUST A WORKAROUND
+				 */
+			if (!ingredient) {
+				/**
+				 * if can not find the specific ingredient
+				 * then write to the log
+				 * and return the fail status
+				 */
+				console.log(err);
+				return res.json({"status": 0});
+			}
+			else {
+				//return the success status
+				ingredient.limit = req.param('amount');
+				return res.json({"status": 1});
+			}
+		});
 	}
 };
-

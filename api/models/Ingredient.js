@@ -21,11 +21,21 @@ module.exports = {
         unit: { type: 'string', size: 5, required: true },
         // unit: { type: 'string', size: 5, required: true, enum: ['p', 'mg', 'ml'], defaultsTo: 'cái'},
 
-        toJSON: function() {
-            var obj = this.toObject();
-            //obj.category = obj.category.id;
-            return obj;
-        }
+        limit: {type: 'integer'},
+
+        store: {type: 'store'}
+
+/**
+ * Cái này lại bị lỗi :(
+ * Ai sửa lại giùm.
+ * Lỗi báo ngay chỗ 
+ * toJSON: function()
+ */
+    //     toJSON: function() {
+    //         var obj = this.toObject();
+    //         //obj.category = obj.category.id;
+    //         return obj;
+    //     }
     }
 
 };
