@@ -38,6 +38,11 @@ module.exports.routes = {
 
   // Resources endPoints
 
+  'get /product/view': {
+    controller: 'ProductController',
+    action: 'viewAll'
+  },
+
   '/info': {
     controller: 'InfoController',
     action: 'index'

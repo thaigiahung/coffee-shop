@@ -16,16 +16,16 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions (`true` allows public access)
     '*': true,
-    StoreController: 'oauthBearer',
-    CategoryController: 'oauthBearer',
-    ProductController: 'oauthBearer',
-    CustomerController: 'oauthBearer',
-    CouponController: 'oauthBearer',
-    SaleController:  'oauthBearer',
-    IngredientController: 'oauthBearer',
-    IngredientCategoryController: 'oauthBearer',
-    InfoController: 'oauthBearer',
-    RecipeItemController: 'oauthBearer',
-    UserController: 'sessionAuth'
+    // StoreController: 'oauthBearer',
+    // CategoryController: 'oauthBearer',
+    // ProductController: 'oauthBearer',
+    // CustomerController: 'oauthBearer',
+    // CouponController: 'oauthBearer',
+    // SaleController:  'oauthBearer',
+    // IngredientController: 'oauthBearer',
+    // IngredientCategoryController: 'oauthBearer',
+    // InfoController: 'oauthBearer',
+    // RecipeItemController: 'oauthBearer',
+    // UserController: 'sessionAuth'
 };
 
