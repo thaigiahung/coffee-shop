@@ -59,32 +59,27 @@ module.exports = {
  */
 	updateLimit: function(req, res) {
 		/**
-		 * find one ingredient by id
+		 * find one ingredient by id and storeid
 		 * then update the limit equal to amount
 		 */
-		Ingredient.findOne({id: req.param('id')})
+		Ingredient.update({ id: req.param('id'), store: req.param('storeid') },
+			{ limit: req.param('amount') } )
 			.exec(function (err, ingredient) {
-				/**
-				 * Using of if(!ingredient) 
-				 * instead of if(err) 
-				 * is because I can't not get the if(err) to work
-				 *
-				 * THIS IS JUST A WORKAROUND
-				 */
-			if (!ingredient) {
-				/**
-				 * if can not find the specific ingredient
-				 * then write to the log
-				 * and return the fail status
-				 */
+
+			//check if there is any error. write to the log and return fail
+			if (err) {
 				console.log(err);
 				return res.json({"status": 0});
 			}
-			else {
-				//return the success status
-				ingredient.limit = req.param('amount');
-				return res.json({"status": 1});
+
+			//check if there is no ingredient found. write to the log and return fail
+			if (!ingredient || !ingredient.length) {
+				console.log("Can not find any ingredient");
+				return res.json({"status": 0});
 			}
+
+			//if everything is ok, return success
+			return res.json({"status": 1});
 		});
 	}
 };
