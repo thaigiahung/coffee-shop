@@ -1,0 +1,81 @@
+[API name] API document
+description (optional)
+write document for these API:
+- show all products
+- show product by id
+(because there maybe 1 task that contain an API for showing all products + view product by id)
+
+The result document will have these information:
+- What the API do.
+- What other API will be used in this API.
+- input format
+- output format
+
+[Function name] function document
+description (optional)
+write document for these function:
+- view all products
+- view product by id
+(because there maybe 1 task that contain an API for viewing all products + viewing all products sort by name)
+
+The result document will have these information:
+- What the API do.
+- What other API will be used in this API.
+- input format from API
+- output format to view
+- which view will be use
+
+Difference betwween API and Function:
+API : 
+- Is the smallest section of code, somehow like service in design pattern.
+- Api can be use/call more than one time in the whole application in many functions. (Reuseable code, deduplicate code)
+- Only return a json.
+
+Function :
+- Contains many API
+- Have its view
+
+example: 
+
+API to check activated user :
+function isActivated(id)
+{
+    User.find(id).exec(function(err,user){
+        //is there any errors
+        if(err) return console.log(err);
+
+        //is there any user with that id
+        if(!user) return res.json({"status": "can not find that user"});
+
+        //is this user activated
+        if(user.actived==1) 
+            return res.json({"status": 1});
+        return res.json({"status": 0});
+    });
+}
+
+function Activate(id)
+{
+    User.find(id).exec(function(err,user){
+        //is there any errors
+        if(err) return console.log(err);
+
+        //is there any user with that id
+        if(!user) return res.json({"status": "can not find that user"});
+
+        //is this user activated
+        user.actived=1;
+        return res.json({"status": success});
+    });
+}
+
+Function to check activated user : 
+//I does not know how to use view yet, so that I only write the idea.
+
+- have a view for the user to choose which user to check
+- after the user click on button "check", the view will call the API isActivated and pass the id from the view to the API
+- then get the return, 
+if it's 1(which means the user is already active) then redirect to the homepage.
+if it's 0(which mean the user is not actived) then active the user then redirect to the homepage.
+
+So that, as you can see, the function is containing a series of action, which is nearly be unique and will not be use in any other part of our application. Also, this function is using 2 APIs which is isActivated and Activate. These API may be use again somewhere else in our application.

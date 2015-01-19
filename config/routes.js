@@ -48,4 +48,7 @@ module.exports.routes = {
     action: 'index'
   },
 
+  '/test': {
+    view: 'test'
+  }
 }

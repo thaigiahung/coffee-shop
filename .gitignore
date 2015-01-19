@@ -1,3 +1,8 @@
 node_modules
 .tmp
 node_modules_backup
+.foreverignore
+start.bat
+stop.bat
+list.bat
+log.bat

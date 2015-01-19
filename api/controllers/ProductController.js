@@ -150,8 +150,18 @@ module.exports = {
 		});
 
 		res.send("DONE");
+	},
+
+	viewAll: function (req, res) {
+		var items = [];
+		Product.find().exec(function (err, products) {
+			items.push(products);
+		});
+		Store.find().exec(function (err, stores) {
+		});
+		res.json(items);
 	}
-	
+
 // create: function(req, res){
 
  //        var data = actionUtil.parseValues(req),
