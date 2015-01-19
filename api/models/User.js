@@ -11,11 +11,15 @@ var bcrypt = require('bcrypt');
 module.exports = {
 
   attributes: {
+        id: { type: 'integer', autoIncrement: true, primaryKey: true },
+
         name: { type: 'string'},
 
         email: { type: 'string'},
         
         store: { model: 'store' },
+
+        mobile: { type: 'string' },
 
         hashedPassword: { type: 'string'},
         

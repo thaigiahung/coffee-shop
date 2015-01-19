@@ -12,7 +12,12 @@ module.exports = {
 
         name: { type: 'string', unique: true },
 
-        stores: { collection: 'store', via: 'campaigns', dominant: true },
+        /**
+         * This line will cause the  error :
+         * d:\coffee-shop\node_modules\sails\node_modules\waterline\node_modules\waterline-schema\lib\waterline-schema\utils.js:46
+         *      return hop.call(obj, prop);
+         */
+        // stores: { collection: 'store', via: 'campaigns', dominant: true },
 
         status: { type: 'integer', defaultsTo: 0}
     }

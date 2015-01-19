@@ -20,7 +20,11 @@ module.exports = {
 
         unit: { type: 'string', size: 5, required: true, enum: ['p', 'mg', 'ml'], defaultsTo: 'cái'},
 
-        instock: {type: 'integer', required: true, defaultsTo: 0},
+        instock: { type: 'integer', required: true, defaultsTo: 0 },
+
+        store: { model: 'store' , required: true},
+
+        limit: { type: 'int', required: true, defaultsTo: 0},
 
         toJSON: function() {
             var obj = this.toObject();
