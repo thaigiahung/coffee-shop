@@ -22,6 +22,10 @@ module.exports = {
 
         instock: {type: 'integer', required: true, defaultsTo: 0},
 
+        store: { model: 'Store' },
+
+        limit: { type: 'integer' },
+
         toJSON: function() {
             var obj = this.toObject();
             //obj.category = obj.category.id;
