@@ -11,9 +11,9 @@ module.exports = {
 
     id: { type: 'integer', autoIncrement: true, primaryKey: true},
 
-    // product: { model: 'product', required: true },
+    product: { model: 'product', required: true },
 
-    // store: { model: 'store', required: true },
+    store: { model: 'store', required: true },
 
     quantity: { type: 'integer', required: true },
 

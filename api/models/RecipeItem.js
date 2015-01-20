@@ -11,9 +11,9 @@ module.exports = {
     attributes: {
         id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-        // product: { model: 'product' },
+        product: { model: 'product' },
 
-        // ingredient: { model: 'ingredient' },
+        ingredient: { model: 'ingredient' },
 
         amount: { type: 'integer' }
     }

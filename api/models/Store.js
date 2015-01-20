@@ -16,9 +16,9 @@ module.exports = {
 
         phone: { type: 'string', required: true },
 
-        // chain: { model: 'chain', required: true },
+        chain: { model: 'chain', required: true },
 
-        // manager: { model: 'user', required: true },
+        manager: { model: 'user', required: true },
 
         deleted: { type: 'boolean', defaultsTo: false },
 

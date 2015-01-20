@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
     id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-    // ingredient: { model: 'ingredient', required: true },
+    ingredient: { model: 'ingredient', required: true },
 
     time: { type: 'datetime', required: true },
 
@@ -21,7 +21,7 @@ module.exports = {
     amount: { type: 'integer' },
 
     //because the price may not be the same for each store
-    // store: { model: 'store', required: true },
+    store: { model: 'store', required: true },
   }
 };
 

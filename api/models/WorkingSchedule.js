@@ -8,7 +8,13 @@
 module.exports = {
 
   attributes: {
+    id: { type: 'integer', autoIncrement: true, primaryKey: true},
 
+    user: { model: 'user', required: true },
+
+    startime: { type: 'datetime', required: true },
+
+    endtime: { type: 'datetime', required: true },
   }
 };
 

@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
     id: { type: 'integer', autoIncrement: true, primaryKey: true},
 
-    // workingschedule: { model: 'workingschedule', required: true },
+    workingschedule: { model: 'workingschedule', required: true },
 
     attribute: { type: 'string', required: true },
 

@@ -10,9 +10,9 @@ module.exports = {
   attributes: {
         id: { type: 'integer', autoIncrement: true, primaryKey: true },
 
-        // product: { model: 'product', required: true },
+        product: { model: 'product', required: true },
 
-        // ingredient: { model: 'ingredient', required: true },
+        ingredient: { model: 'ingredient', required: true },
 
         amount: { type: 'integer', required: true },
 

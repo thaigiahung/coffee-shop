@@ -17,11 +17,11 @@ module.exports = {
 
         email: { type: 'string' },
         
-        // store: { model: 'store' },
+        store: { model: 'store' },
 
         mobile: { type: 'string' },
 
-        hashedPassword: { type: 'string', required: true },
+        hashedPassword: { type: 'string', required: true, defaultsTo: "NULL" },
 
         deleted: { type: 'boolean', defaultsTo: false },
 

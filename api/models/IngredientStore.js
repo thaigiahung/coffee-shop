@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
     id: { type: 'integer', autoIncrement: true, primaryKey: true},
 
-    // store: { model: 'store' , required: true},
+    store: { model: 'store' , required: true},
 
     limit: { type: 'integer', required: true, defaultsTo: 0},
 

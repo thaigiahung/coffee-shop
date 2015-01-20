@@ -10,9 +10,9 @@ module.exports = {
   attributes: {
         id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-        // receipt: { model: 'receipt', required: true },
+        receipt: { model: 'receipt', required: true },
 
-        // product: { model: 'product', required: true },
+        product: { model: 'product', required: true },
 
         price: { type: 'float', required: true },
 

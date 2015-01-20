@@ -20,7 +20,7 @@ module.exports = {
 
         description: { type: 'text', required: false },
 
-        // category: { model: 'category' },
+        category: { model: 'category' },
 
         deleted: { type: 'boolean', defaultsTo: false },
 /**

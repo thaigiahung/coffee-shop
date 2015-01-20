@@ -38,14 +38,14 @@ module.exports.routes = {
 
   // Resources endPoints
 
-  'get /product/view': {
-    controller: 'ProductController',
-    action: 'viewAll'
-  },
+  // 'get /product/view': {
+  //   controller: 'ProductController',
+  //   action: 'viewAll'
+  // },
 
-  '/info': {
-    controller: 'InfoController',
-    action: 'index'
-  },
+  // '/info': {
+  //   controller: 'InfoController',
+  //   action: 'index'
+  // },
 
 }

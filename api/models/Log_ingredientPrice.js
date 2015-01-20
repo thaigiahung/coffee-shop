@@ -11,7 +11,7 @@ module.exports = {
 
     id: { type: 'integer', autoIncrement: true, primaryKey: true},
 
-    // ingredientprice: { model: 'ingredientprice', required: true },
+    ingredientprice: { model: 'ingredientprice', required: true },
 
     attribute: { type: 'string', required: true },
 
@@ -19,7 +19,7 @@ module.exports = {
 
     newvalue: { type: 'string', required: true },
 
-    // user: { model: 'user', required: true },
+    user: { model: 'user', required: true },
 
     timechange: { type: 'datetime', required: true },
 

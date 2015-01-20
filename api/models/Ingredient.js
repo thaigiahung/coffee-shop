@@ -12,7 +12,7 @@ module.exports = {
 
         name: { type: 'string', size: 50, required: true, unique: true },
 
-        // category: { model: 'IngredientCategory' },
+        category: { model: 'IngredientCategory' },
 
         description: { type: 'string'},
 
