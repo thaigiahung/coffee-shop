@@ -47,5 +47,5 @@ module.exports.routes = {
   //   controller: 'InfoController',
   //   action: 'index'
   // },
-
+  // 
 }

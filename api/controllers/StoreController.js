@@ -40,6 +40,6 @@ module.exports = {
 			}
 		});
 		res.send('DONE');
-	}
+	},
 };
 
