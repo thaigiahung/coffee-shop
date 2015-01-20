@@ -47,5 +47,9 @@ module.exports.routes = {
   //   controller: 'InfoController',
   //   action: 'index'
   // },
-
+  // 
+  '/store/view': {
+    controller: 'StoreController',
+    action: 'view'
+  }
 }
