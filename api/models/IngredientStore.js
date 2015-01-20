@@ -12,10 +12,11 @@ module.exports = {
 
     store: { model: 'store' , required: true},
 
+    ingredient: { model: 'ingredient', required: true },
+
     limit: { type: 'integer', required: true, defaultsTo: 0},
 
     instock: { type: 'integer', required: true, defaultsTo: 0 },
-
   }
 };
 
