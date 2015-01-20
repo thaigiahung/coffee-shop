@@ -10,11 +10,11 @@ module.exports = {
   attributes: {
     id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-    user: { model: 'user' },
+    // user: { model: 'user', required: true },
 
-    action: { type: 'string' },
+    action: { type: 'string', required: true },
 
-    policy: { type: 'boolean' },
+    policy: { type: 'boolean', required: true, defaultsTo: false },
   }
 };
 

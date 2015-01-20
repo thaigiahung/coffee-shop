@@ -13,16 +13,24 @@ module.exports = {
   attributes: {
         id: { type: 'integer', autoIncrement: true, primaryKey: true },
 
-        name: { type: 'string'},
+        name: { type: 'string' },
 
-        email: { type: 'string'},
+        email: { type: 'string' },
         
-        store: { model: 'store' },
+        // store: { model: 'store' },
 
         mobile: { type: 'string' },
 
-        hashedPassword: { type: 'string'},
-        
+        hashedPassword: { type: 'string', required: true },
+
+        deleted: { type: 'boolean', defaultsTo: false },
+
+        // Add a reference to User
+        storeowners: {
+            collection: 'store',
+            via: 'owners'
+        },
+
         toJSON: function() {
           var obj = this.toObject();
           delete obj.password;

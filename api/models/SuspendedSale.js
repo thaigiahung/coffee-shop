@@ -13,7 +13,7 @@ module.exports = {
 
         ref: { type: 'string'},
 
-        customer: { model: 'customer' },
+        // customer: { model: 'customer' },
 
         subtotal: {type: 'float'},
 
@@ -21,13 +21,13 @@ module.exports = {
 
         discount: {type: 'float'},
 
-        coupon: { model: 'coupon' },
+        // coupon: { model: 'coupon' },
 
         total: {type: 'float'},
 
         totalItem: {type: 'integer'},
 
-        user: { model: 'user'}
+        // user: { model: 'user'}
 
     }
 };

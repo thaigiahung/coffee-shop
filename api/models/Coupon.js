@@ -21,7 +21,7 @@ module.exports = {
 
         expriedIn: { type: 'integer' },
 
-        campaign: { model: 'campaign' },
+        // campaign: { model: 'campaign' },
     }
 };
 

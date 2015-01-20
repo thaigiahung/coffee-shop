@@ -13,7 +13,7 @@ module.exports = {
 
         receiptid: { type: 'string' , required: true, unique: true },
 
-        customer: { model: 'customer' },
+        // customer: { model: 'customer' },
 
         tax: { type: 'float' , required: true},
 
@@ -27,14 +27,14 @@ module.exports = {
 
         totalitem: { type: 'integer' , required: true},
 
-        user: { model: 'user' , required: true},
+        // user: { model: 'user' , required: true},
 
         time: { type: 'datetime' , required: true},
 
-        store: { model: 'store' , required: true},
+        // store: { model: 'store' , required: true},
 
         //Tiền khách đưa
-        received: { type: 'float' }
+        received: { type: 'float', required: true }
   }
 };
 

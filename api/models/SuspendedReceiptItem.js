@@ -11,13 +11,13 @@ module.exports = {
 
         id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-        receiptid: { type: 'string' },
+        // suspendedreciept: { model: 'suspendedreceipt', required: true },
 
-        product: { model: 'product' },
+        // product: { model: 'product', required: true },
 
-        amount: { type: 'int' },
+        amount: { type: 'int', required: true },
 
-        price: { type: 'float' },
+        price: { type: 'float', required: true },
   }
 };
 

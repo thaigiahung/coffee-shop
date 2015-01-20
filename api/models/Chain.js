@@ -10,9 +10,11 @@ module.exports = {
   attributes: {
         id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-        owner: { model: 'user' },
+        // owner: { model: 'user', required: true },
 
         description: { type: 'text' },
+
+        deleted: { type: 'boolean', defaultsTo: false },
   }
 };
 

@@ -20,7 +20,9 @@ module.exports = {
 
         description: { type: 'text', required: false },
 
-        category: { model: 'category' },
+        // category: { model: 'category' },
+
+        deleted: { type: 'boolean', defaultsTo: false },
 /**
  * E bỏ cái hàm này thì của e chạy ngon lành :|
  * Coi bên category, ingredient thì đâu có cần cái này đâu ta.

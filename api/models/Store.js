@@ -12,13 +12,22 @@ module.exports = {
 
         name: { type: 'string' },
 
-        address: { type: 'string' },
+        address: { type: 'string', required: true },
 
-        phone: { type: 'string' },
+        phone: { type: 'string', required: true },
 
-        chain: { model: 'chain' },
+        // chain: { model: 'chain', required: true },
 
-        manager: { model: 'user' },
+        // manager: { model: 'user', required: true },
+
+        deleted: { type: 'boolean', defaultsTo: false },
+
+        // Add a reference to User
+        owners: {
+            collection: 'user',
+            via: 'storeowners',
+            dominant:true
+        },
   }
 };
 

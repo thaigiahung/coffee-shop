@@ -1,5 +1,5 @@
 /**
- * ReceiptitemController
+ * ReceiptItemController
  *
  * @description :: Server-side logic for managing receiptitems
  * @help        :: See http://links.sailsjs.org/docs/controllers

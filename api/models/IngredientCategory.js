@@ -13,7 +13,9 @@ module.exports = {
 
         name : { type: 'string', required: true, unique: true },
 
-        description : { type: 'text', required: false }
+        description : { type: 'text', required: false },
+
+        deleted: { type: 'boolean', defaultsTo: false },
     }
 };
 

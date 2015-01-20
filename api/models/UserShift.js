@@ -10,13 +10,13 @@ module.exports = {
   attributes: {
     id: {type: 'integer', autoIncrement: true, primaryKey: true},
 
-    user: { model: 'user' },
+    // user: { model: 'user', required: true },
 
-    starttime: { type: 'datetime' },
+    starttime: { type: 'datetime', required: true },
 
-    endtime: { type: 'datetime' },
+    endtime: { type: 'datetime', required: true },
 
-    store: { model: 'store' },
+    // store: { model: 'store', required: true },
   }
 };
 

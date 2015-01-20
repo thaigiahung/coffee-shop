@@ -12,19 +12,14 @@ module.exports = {
 
         name: { type: 'string', size: 50, required: true, unique: true },
 
-        category: {model: 'IngredientCategory' },
+        // category: { model: 'IngredientCategory' },
 
-        price: { type: 'float' },
+        description: { type: 'string'},
 
-        description: {type: 'string'},
+        deleted: { type: 'boolean', defaultsTo: false },
 
-        unit: { type: 'string', size: 5, required: true, enum: ['p', 'mg', 'ml'], defaultsTo: 'cái'},
-
-        instock: { type: 'integer', required: true, defaultsTo: 0 },
-
-        store: { model: 'store' , required: true},
-
-        limit: { type: 'int', required: true, defaultsTo: 0},
+        unit: { type: 'string', size: 5, required: true },
+        // unit: { type: 'string', size: 5, required: true, enum: ['p', 'mg', 'ml'], defaultsTo: 'cái'},
 
         toJSON: function() {
             var obj = this.toObject();
