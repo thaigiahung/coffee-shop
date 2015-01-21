@@ -45,8 +45,12 @@ module.exports = {
 		});
 	},
 
+/**
+ * show all ingredients
+ */
 	view: function(req, res) {
 		Ingredient.find().exec(function (err, found) {
+			//check if there is any error
 			if(err) {
 				res.json({
 					'status': 0,
@@ -54,6 +58,7 @@ module.exports = {
 				});
 			}
 
+			//check if there is any product
 			if(!found || !found.length) {
 				res.json({
 					'status': 0,
