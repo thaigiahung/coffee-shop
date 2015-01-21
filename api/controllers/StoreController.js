@@ -25,6 +25,30 @@ module.exports = {
 		});
 	},
 
+	view: function(req, res) {
+		Store.find().exec(function (err, found) {
+			if(err) {
+				res.json({
+					'status': 0,
+					'message': 'error'
+				});
+			}
+
+			if(!found || !found.length) {
+				res.json({
+					'status': 0,
+					'message': 'can not find any store'
+				});
+			}
+
+			res.json({
+				'status': 1,
+				'message': 'success',
+				'store': found
+			});
+		});
+	},
+
 	updateMix: function(req, res) {
 		console.log("update mix store");
 		Store.find().exec(function(err, result){

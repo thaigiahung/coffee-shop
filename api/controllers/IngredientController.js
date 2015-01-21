@@ -69,7 +69,7 @@ module.exports = {
 				'ingredient': found
 			});
 		});
-	}
+	},
 
 /**
  * [description] update the limitation of the ingredient
