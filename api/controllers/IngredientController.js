@@ -45,6 +45,32 @@ module.exports = {
 		});
 	},
 
+	view: function(req, res) {
+		Ingredient.find().exec(function (err, found) {
+			//check if there is any error
+			if(err) {
+				res.json({
+					'status': 0,
+					'message': 'error'
+				});
+			}
+
+			//check if there is any product
+			if(!found || !found.length) {
+				res.json({
+					'status': 0,
+					'message': 'can not find any ingredient'
+				});
+			}
+
+			res.json({
+				'status': 1,
+				'message': 'success',
+				'ingredient': found
+			});
+		});
+	}
+
 /**
  * [description] update the limitation of the ingredient
  * when the amount of ingredient instock reached this LIMIT
