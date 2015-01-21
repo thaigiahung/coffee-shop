@@ -52,13 +52,19 @@ module.exports.routes = {
   //   action: 'index'
   // },
   // 
-  'store/view': {
+  '/store/view': {
     controller: 'StoreController',
     action: 'view'
   },
 
-  'ingredient/view': {
+  '/ingredient/show/:store': {
+    controller: 'IngredientController',
+    action: 'getIngredientOf1Store'
+  },
+
+  '/ingredient/view': {
     controller: 'IngredientController',
     action: 'view'
   },
+  
 }

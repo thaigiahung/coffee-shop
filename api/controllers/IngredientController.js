@@ -71,6 +71,37 @@ module.exports = {
 		});
 	},
 
+	getIngredientOf1Store: function(req, res) {		
+		IngredientStore.find({ store: req.param('store') }).populate('ingredient').exec(function (err, founds) {
+			if(err) {
+				res.json({
+					'status': 0,
+					'message': 'Lỗi'
+				});
+			}
+			else if(typeof founds == "undefined" || founds.length == 0) {
+				res.json(
+				{
+					"message": "Không tìm thấy nguyên liệu!",
+					"status": 0
+				});
+			}
+			else
+			{
+				var arrIngredient = [];
+				founds.forEach(function(found){
+					var ingre = {"ingredientid": found.ingredient.id,"ingredientname": found.ingredient.name};
+					arrIngredient.push(ingre);
+				});
+				res.json({
+					'status': 1,
+					'message': 'Thành công',
+					'ingredient': arrIngredient
+				});
+			}			
+		});
+	},
+
 /**
  * [description] update the limitation of the ingredient
  * when the amount of ingredient instock reached this LIMIT
