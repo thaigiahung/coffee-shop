@@ -102,6 +102,32 @@ module.exports = {
 		});
 	},
 
+	getLimitOf1Ingredient: function(req, res) {		
+		IngredientStore.findOne({ store: req.param('store'), ingredient: req.param('ingredient')  }).populate('ingredient').exec(function (err, found) {
+			if(err) {
+				res.json({
+					'status': 0,
+					'message': 'Lỗi'
+				});
+			}
+			else if(typeof found == "undefined") {
+				res.json(
+				{
+					"message": "Không tìm thấy nguyên liệu!",
+					"status": 0
+				});
+			}
+			else
+			{
+				res.json({
+					'status': 1,
+					'message': 'Thành công',
+					'ingredient': found.ingredient
+				});
+			}			
+		});
+	},
+
 /**
  * [description] update the limitation of the ingredient
  * when the amount of ingredient instock reached this LIMIT

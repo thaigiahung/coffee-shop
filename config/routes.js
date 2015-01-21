@@ -62,6 +62,11 @@ module.exports.routes = {
     action: 'getIngredientOf1Store'
   },
 
+  '/ingredient/get-limit/:store/:ingredient': {
+    controller: 'IngredientController',
+    action: 'getLimitOf1Ingredient'
+  },
+
   '/ingredient/view': {
     controller: 'IngredientController',
     action: 'view'
