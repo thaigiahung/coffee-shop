@@ -48,4 +48,13 @@ module.exports.routes = {
   //   action: 'index'
   // },
   // 
+  'store/view': {
+    controller: 'StoreController',
+    action: 'view'
+  },
+
+  'ingredient/view': {
+    controller: 'IngredientController',
+    action: 'view'
+  },
 }

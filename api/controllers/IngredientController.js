@@ -43,6 +43,30 @@ module.exports = {
 				});
 			}
 		});
+	},
+
+	view: function(req, res) {
+		Ingredient.find().exec(function (err, found) {
+			if(err) {
+				res.json({
+					'status': 0,
+					'message': 'error'
+				});
+			}
+
+			if(!found || !found.length) {
+				res.json({
+					'status': 0,
+					'message': 'can not find any ingredient'
+				});
+			}
+
+			res.json({
+				'status': 1,
+				'message': 'success',
+				'ingredient': found
+			});
+		});
 	}
 };
 
