@@ -42,5 +42,7 @@ module.exports.routes = {
     controller: 'InfoController',
     action: 'index'
   },
-
+  
+  'get /receipt/list/:store?': 'ReceiptController.indexByStore',
+  'get /receipt/get/:id?': 'ReceiptController.indexRecieptItem'
 }

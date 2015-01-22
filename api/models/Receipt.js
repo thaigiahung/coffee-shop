@@ -27,7 +27,9 @@ module.exports = {
 
         totalItem: {type: 'integer'},
 
-        user: { model: 'user'}
+        user: { model: 'user'},
+
+        store: { model: 'store'}
 
     }
 };

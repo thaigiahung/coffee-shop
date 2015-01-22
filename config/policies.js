@@ -21,7 +21,7 @@ module.exports.policies = {
     ProductController: 'oauthBearer',
     CustomerController: 'oauthBearer',
     CouponController: 'oauthBearer',
-    SaleController:  'oauthBearer',
+    ReceiptController:  true,
     IngredientController: 'oauthBearer',
     IngredientCategoryController: 'oauthBearer',
     InfoController: 'oauthBearer',
